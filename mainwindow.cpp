@@ -56,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui中关于和帮助的连接
     connect(ui->actionabout,SIGNAL(triggered(bool)),this,SLOT(doabout()));
     connect(ui->actionhelp,SIGNAL(triggered(bool)),this,SLOT(dohelp()));
+    connect(ui->actionLoad1,SIGNAL(triggered(bool)),this,SLOT(doload1()));
     connect(ui->actionLoad2,SIGNAL(triggered(bool)),this,SLOT(doload2()));
     //end other actions
     nowstatus = new Status();
@@ -554,7 +555,7 @@ void MainWindow::doload1()
     i[0].F2 = "F1";
     i[0].F3 = "F1";
     i[1].Op = "ST";
-    i[1].F1 = "F!";
+    i[1].F1 = "F1";
     i[1].F2 = "10";
     i[1].F3 = "";
     i[2].Op = "SUBD";

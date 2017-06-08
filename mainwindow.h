@@ -39,6 +39,7 @@ private slots:
     void doabout();
     void dohelp();
     void doupdate();
+    void doload1();
     void doload2();
 signals:
     void updatememoryshower();
