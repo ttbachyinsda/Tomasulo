@@ -292,11 +292,11 @@ int Status::updateAddReservation() {
             if (AddReservation[i].truename == CDBresultReservation){
                 addReservationNext[i].IsBusy = false;
             }
-            if (AddReservation[i].QJ == CDBresultReservation){
+            if (addReservationNext[i].QJ == CDBresultReservation){
                 addReservationNext[i].QJ = -1;
                 addReservationNext[i].VJ = CDBresultData;
             }
-            if (AddReservation[i].QK == CDBresultReservation){
+            if (addReservationNext[i].QK == CDBresultReservation){
                 addReservationNext[i].QK = -1;
                 addReservationNext[i].VK = CDBresultData;
             }
@@ -356,11 +356,11 @@ int Status::updateMultiplyReservation() {
             if (MultiplyReservation[i].truename == CDBresultReservation){
                 multiplyReservationNext[i].IsBusy = false;
             }
-            if (MultiplyReservation[i].QJ == CDBresultReservation){
+            if (multiplyReservationNext[i].QJ == CDBresultReservation){
                 multiplyReservationNext[i].QJ = -1;
                 multiplyReservationNext[i].VJ = CDBresultData;
             }
-            if (MultiplyReservation[i].QK == CDBresultReservation){
+            if (multiplyReservationNext[i].QK == CDBresultReservation){
                 multiplyReservationNext[i].QK = -1;
                 multiplyReservationNext[i].VK = CDBresultData;
             }
