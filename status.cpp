@@ -381,8 +381,8 @@ int Status::updateAddReservation() {
                 }
                 AddReservationPointer = NULL;
                 for (int i=0;i<LENADDRESERVATION;i++){
-                    if (AddReservation[i].IsBusy && AddReservation[i].truename != CDBresultReservationNext) {
-                        if (AddReservation[i].QK == -1 && AddReservation[i].QJ == -1) {
+                    if (addReservationNext[i].IsBusy && addReservationNext[i].truename != CDBresultReservationNext) {
+                        if (addReservationNext[i].QK == -1 && addReservationNext[i].QJ == -1) {
                             AddReservationPointer = &addReservationNext[i];
                             addReservationNext[i].Time = CYCLEADD;
                             addReservationNext[i].inst ->startTime = NowCycle;
