@@ -458,12 +458,12 @@ int Status::updateBuffer() {
         }
     }
     if (BufferPointer == NULL){
-        if (Buffer[0].IsBusy && Buffer[0].QK == -1){
+        if (bufferNext[0].IsBusy && bufferNext[0].QK == -1){
             BufferPointer = &bufferNext[0];
             BufferPointer->Time = CYCLELOAD;
         }
     }
-    if (BufferPointer){
+    else{
         bool flag = false;
         if (BufferPointer->Time > 0) --BufferPointer->Time;
         if (BufferPointer->Time == 0){
