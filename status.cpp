@@ -128,18 +128,10 @@ void Status::init()
 void Status::restart()
 {
     init();
-    Memory.clear();
-    for (int i=0;i<LENMEMORY;i++)
-        Memory.append(preMemory[i]);
 }
 void Status::LOCKER(bool lockstatus)
 {
     Lock = lockstatus;
-    if (lockstatus == true){
-        preMemory.clear();
-        for (int i=0;i<LENMEMORY;i++)
-            preMemory.append(Memory[i]);
-    }
 }
 
 //IMPORTANT
@@ -361,6 +353,7 @@ int Status::updateAddReservation() {
         if (AddReservationPointer->Time > 0)
             --AddReservationPointer->Time;
         if (AddReservationPointer->Time == 0){
+            AddReservationPointer->inst->completeTime = NowCycle;
             if (CDBresultEnableNext == false) {
                 CDBresultEnableNext = true;
                 CDBresultReservationNext = AddReservationPointer->truename;
@@ -400,6 +393,7 @@ int Status::updateMultiplyReservation() {
     if (CDBresultEnable){
         for (int i=0;i<LENMULTIPLYRESERVATION;i++){
             if (MultiplyReservation[i].truename == CDBresultReservation){
+                multiplyReservationNext[i].inst ->wbTime = NowCycle;
                 multiplyReservationNext[i].IsBusy = false;
             }
             if (multiplyReservationNext[i].QJ == CDBresultReservation){
@@ -417,6 +411,7 @@ int Status::updateMultiplyReservation() {
             if (multiplyReservationNext[i].IsBusy) {
                 if (multiplyReservationNext[i].QK == -1 && multiplyReservationNext[i].QJ == -1){
                     MultiplyReservationPointer = &multiplyReservationNext[i];
+                    multiplyReservationNext[i].inst ->startTime = NowCycle;
                     switch(MultiplyReservationPointer->trueop){
                     case OPMULTIPLY:
                     {
@@ -438,6 +433,7 @@ int Status::updateMultiplyReservation() {
     } else {
         if (MultiplyReservationPointer->Time > 0) -- MultiplyReservationPointer->Time;
         if (MultiplyReservationPointer->Time == 0) {
+            MultiplyReservationPointer->inst->completeTime = NowCycle;
             if (CDBresultEnableNext == false){
                 CDBresultEnableNext = true;
                 CDBresultReservationNext = MultiplyReservationPointer->truename;
@@ -461,6 +457,7 @@ int Status::updateMultiplyReservation() {
                     if (multiplyReservationNext[i].IsBusy && multiplyReservationNext[i].truename != CDBresultReservationNext) {
                         if (multiplyReservationNext[i].QK == -1 && multiplyReservationNext[i].QJ == -1){
                             MultiplyReservationPointer = &multiplyReservationNext[i];
+                            multiplyReservationNext[i].inst ->startTime = NowCycle;
                             switch (MultiplyReservationPointer->trueop){
                             case OPMULTIPLY:
                             {
@@ -504,6 +501,7 @@ int Status::updateBuffer() {
     }
     if (flag)
     {
+        bufferNext[0]->inst->wbTime = NowCycle;
         int name = bufferNext[0]->truename;
         delete bufferNext[0];
         bufferNext.erase(bufferNext.begin());
@@ -519,6 +517,7 @@ int Status::updateBuffer() {
         if (bufferNext[0]->IsBusy && bufferNext[0]->QK == -1){
             BufferPointer = bufferNext[0];
             BufferPointer->Time = CYCLELOAD;
+            BufferPointer -> inst ->startTime = NowCycle;
         }
     }
     else{
@@ -526,6 +525,7 @@ int Status::updateBuffer() {
         if (BufferPointer->Time > 0) --BufferPointer->Time;
         if (BufferPointer->Time == 0){
 //            BufferPointer->A += BufferPointer->VJforBuffer;
+            BufferPointer ->inst->completeTime = NowCycle;
             if (BufferPointer->trueop == OPSTORE) {
                 storeEnable = true;
                 storeData = BufferPointer->VK;
@@ -546,6 +546,7 @@ int Status::updateBuffer() {
             if (bufferNext[1]->IsBusy && bufferNext[1]->QK == -1){
                 BufferPointer = bufferNext[1];
                 BufferPointer->Time = CYCLELOAD;
+                BufferPointer ->inst->startTime = NowCycle;
             }
         }
     }
