@@ -9,6 +9,7 @@
 #include <vector>
 #include <map>
 #include <QKeyEvent>
+#include <cmath>
 using namespace std;
 
 namespace Ui {

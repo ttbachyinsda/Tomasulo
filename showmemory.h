@@ -8,7 +8,7 @@
 #include <QDebug>
 #include <vector>
 #include <QKeyEvent>
-
+#include <cmath>
 namespace Ui {
 class ShowMemory;
 }

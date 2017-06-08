@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <vector>
 #include <QKeyEvent>
+#include <cmath>
 using namespace std;
 
 namespace Ui {
