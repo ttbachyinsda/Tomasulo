@@ -231,16 +231,16 @@ int Status::updateOut(){
                 bufferNext[i].IsBusy = true;
                 bufferNext[i].trueop = inst->trueop;
                 bufferNext[i].Time = -1;
-                Register *F2 = getRegister(inst->truef2);
-                if (F2->Q == -1) {
-                    bufferNext[i].QJ = -1;
-                    bufferNext[i].VJforBuffer = F2->V;
-                }
-                else
-                    bufferNext[i].QJ = F2->Q;
-                bufferNext[i].A = inst->truef3;
+//                Register *F2 = getRegister(inst->truef2);
+//                if (F2->Q == -1) {
+//                    bufferNext[i].QJ = -1;
+//                    bufferNext[i].VJforBuffer = F2->V;
+//                }
+//                else
+//                    bufferNext[i].QJ = F2->Q;
+                bufferNext[i].A = inst->truef2;
                 bufferNext[i].QK = -1;
-                bufferNext[i].Time = -1;
+                bufferNext[i].QJ = -1;
                 FRenable = true;
                 FRres = bufferNext[i].truename;
                 FRname = inst->truef1;
@@ -257,15 +257,16 @@ int Status::updateOut(){
                 bufferNext[i].IsBusy = true;
                 bufferNext[i].trueop = inst->trueop;
                 bufferNext[i].Time = -1;
-                Register* F2 = getRegister(inst->truef2);
-                if (F2->Q == -1){
-                    bufferNext[i].QJ = -1;
-                    bufferNext[i].VJforBuffer = F2->V;
-                }
-                else
-                    bufferNext[i].QJ = F2->Q;
-                bufferNext[i].A = inst->truef3;
+//                Register* F2 = getRegister(inst->truef2);
+//                if (F2->Q == -1){
+//                    bufferNext[i].QJ = -1;
+//                    bufferNext[i].VJforBuffer = F2->V;
+//                }
+//                else
+//                    bufferNext[i].QJ = F2->Q;
+                bufferNext[i].A = inst->truef2;
                 bufferNext[i].Time = -1;
+                bufferNext[i].QJ = -1;
                 FRegister *F1 = getFRegister(inst->truef1);
                 if (F1->Q == -1){
                     bufferNext[i].QK = -1;
@@ -465,7 +466,7 @@ int Status::updateBuffer() {
         bool flag = false;
         if (BufferPointer->Time > 0) --BufferPointer->Time;
         if (BufferPointer->Time == 0){
-            BufferPointer->A += BufferPointer->VJforBuffer;
+//            BufferPointer->A += BufferPointer->VJforBuffer;
             if (BufferPointer->trueop == OPSTORE) {
                 storeEnable = true;
                 storeData = BufferPointer->VK;
