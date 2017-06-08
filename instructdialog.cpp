@@ -143,10 +143,16 @@ void InstructDialog::updateitem()
         instruction.F1 = realinstruct.section(' ',1,1);
         instruction.F2 = realinstruct.section(' ',2,2);
         instruction.F3 = realinstruct.section(' ',3,3);
-        instruction.trueop = registerconvert[instruction.Op];
-        instruction.truef1 = registerconvert[instruction.F1];
-        instruction.truef2 = registerconvert[instruction.F2];
-        instruction.truef3 = registerconvert[instruction.F3];
+        if (instruction.Op == "LD" || instruction.Op == "ST"){
+            instruction.trueop = registerconvert[instruction.Op];
+            instruction.truef1 = registerconvert[instruction.F1];
+            instruction.truef2 = instruction.F2.toInt();
+        } else {
+            instruction.trueop = registerconvert[instruction.Op];
+            instruction.truef1 = registerconvert[instruction.F1];
+            instruction.truef2 = registerconvert[instruction.F2];
+            instruction.truef3 = registerconvert[instruction.F3];
+        }
         nowstatus->InstructList.append(instruction);
     }
     emit updatemain();

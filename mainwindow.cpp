@@ -466,13 +466,8 @@ void MainWindow::consideritem()
             ui->loadstorequeue->item(i,1)->setTextColor(Qt::green);
             ui->loadstorequeue->item(i,1)->setTextAlignment(Qt::AlignCenter);
         }
-        if (nowstatus->Buffer[i].QJ){
-            ui->loadstorequeue->setItem(i,2,new QTableWidgetItem(QString::number(nowstatus->Buffer[i].QJ)));
-            ui->loadstorequeue->item(i,2)->setTextAlignment(Qt::AlignCenter);
-        } else {
-            ui->loadstorequeue->setItem(i,2,new QTableWidgetItem(""));
-            ui->loadstorequeue->item(i,2)->setTextAlignment(Qt::AlignCenter);
-        }
+        ui->loadstorequeue->setItem(i,2,new QTableWidgetItem(QString::number(nowstatus->Buffer[i].A)));
+        ui->loadstorequeue->item(i,2)->setTextAlignment(Qt::AlignCenter);
     }
 }
 //这是一个回调函数，不需要修改
