@@ -181,10 +181,10 @@ void MainWindow::dopause()
 void MainWindow::dorestart()
 {
     //需要实现从头开始的函数，如：
-//    nowstatus->restart();
+    nowstatus->restart();
     cout<<"do restart"<<endl;
     SET_RUNSTATUS(0);
-//    doupdate();
+    doupdate();
 }
 void MainWindow::dohalt()
 {

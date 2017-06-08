@@ -2,18 +2,25 @@
 
 Status::Status()
 {
+    init();
+}
+
+void Status::init()
+{
     Opconvert[OPADD] = "ADDD";
     Opconvert[OPMINUS] = "SUBD";
     Opconvert[OPMULTIPLY] = "MULD";
     Opconvert[OPDIVIDE] = "DIVD";
     Opconvert[OPLOAD] = "LD";
     Opconvert[OPSTORE] = "ST";
+    Buffer.clear();
     for (int i=0;i<bufferlen;i++){
         RStation loadstore;
         loadstore.truename = i + LENADDRESERVATION + LENMULTIPLYRESERVATION;
         Loadstoreconvert[i+LENADDRESERVATION+LENMULTIPLYRESERVATION] = "Buffer"+QString::number(i+1);
         Buffer.append(loadstore);
     }
+    IntRegister.clear();
     for (int i=0;i<registerlen;i++){
         Register reg;
         reg.Name="R"+QString::number(i);
@@ -21,6 +28,7 @@ Status::Status()
         reg.V = i+1;
         IntRegister.append(reg);
     }
+    FloatRegister.clear();
     for (int i=0;i<registerlen;i++){
         FRegister reg;
         reg.Name="F"+QString::number(i);
@@ -28,18 +36,21 @@ Status::Status()
         reg.V = i+1;
         FloatRegister.append(reg);
     }
+    AddReservation.clear();
     for (int i=0;i<addreservation;i++){
         RStation res;
         res.truename = i;
         res.Name = "ADD"+QString::number(i+1);
         AddReservation.append(res);
     }
+    MultiplyReservation.clear();
     for (int i=0;i<multireservation;i++){
         RStation res;
         res.truename = i+LENADDRESERVATION;
         res.Name = "MULT"+QString::number(i+1);
         MultiplyReservation.append(res);
     }
+    Memory.clear();
     for (int i=0;i<memorylen;i++){
         Memory.append(0);
     }
@@ -55,33 +66,40 @@ Status::Status()
     CDBresultReservation = -1;
     flag  = false;
 
+    bufferNext.clear();
     for (int i=0;i<LENBUFFER;i++){
         RStation *bn = new RStation();
         bn->truename = i+LENADDRESERVATION + LENMULTIPLYRESERVATION;
         bufferNext.append(bn);
     }
+
+    addReservationNext.clear();
     for (int i=0;i<LENADDRESERVATION;i++){
         RStation arn;
         arn.truename = i;
         addReservationNext.append(arn);
     }
+    multiplyReservationNext.clear();
     for (int i=0;i<LENMULTIPLYRESERVATION;i++){
         RStation mrn;
         mrn.truename = i+LENADDRESERVATION;
         multiplyReservationNext.append(mrn);
     }
+    registerNext.clear();
     for (int i=0;i<LENREGISTER;i++){
         Register rn;
         rn.truename = i;
         rn.V = i+1;
         registerNext.append(rn);
     }
+    floatRegisterNext.clear();
     for (int i=0;i<LENREGISTER;i++){
         FRegister frn;
         frn.truename = i + LENREGISTER;
         frn.V = i+1;
         floatRegisterNext.append(frn);
     }
+    memoryNext.clear();
     for (int i=0;i<LENMEMORY;i++){
         float mn = 0;
         memoryNext.append(mn);
@@ -98,7 +116,7 @@ Status::Status()
 //需要实现restart，即status的重新开始功能
 void Status::restart()
 {
-
+    init();
 }
 void Status::LOCKER(bool lockstatus)
 {

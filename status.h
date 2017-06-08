@@ -42,6 +42,7 @@ class Status
 {
 public:
     Status();
+    void init();
     QList<RStation> Buffer, AddReservation, MultiplyReservation;
     QList<Instruction> InstructList;
     RStation *BufferPointer, *AddReservationPointer, *MultiplyReservationPointer;
