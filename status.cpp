@@ -11,6 +11,11 @@ Status::Status()
     for (int i=0;i<bufferlen;i++){
         RStation loadstore;
         loadstore.truename = i + LENADDRESERVATION + LENMULTIPLYRESERVATION;
+        if (i<LENBUFFER/2){
+            Loadstoreconvert[i+LENADDRESERVATION+LENMULTIPLYRESERVATION] = "Load"+QString::number(i+1);
+        } else {
+            Loadstoreconvert[i+LENADDRESERVATION+LENMULTIPLYRESERVATION] = "Store"+QString::number(i-LENBUFFER/2+1);
+        }
         Buffer.append(loadstore);
     }
     for (int i=0;i<registerlen;i++){
@@ -584,7 +589,7 @@ int Status::updateName()
 {
     qDebug()<<"updateName";
     for (int i=0;i<bufferlen;i++){
-        Buffer[i].Name = QString::number(Buffer[i].truename);
+        Buffer[i].Name = Loadstoreconvert[Buffer[i].truename];
         Buffer[i].Op = Opconvert[Buffer[i].trueop];
     }
     for (int i=0;i<registerlen;i++){

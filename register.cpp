@@ -6,4 +6,5 @@ Register::Register()
     this->Q = -1;
     this->truename = -1;
     this->V = 0;
+    this->QName = "";
 }

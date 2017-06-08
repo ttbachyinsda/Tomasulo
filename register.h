@@ -9,6 +9,7 @@ public:
     QString Name;
     int truename;
     int Q;
+    QString QName;
     int V;
 };
 
