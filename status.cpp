@@ -7,6 +7,12 @@ Status::Status()
 
 void Status::init()
 {
+    for (int i=0;i<InstructList.size();i++)
+    {
+        InstructList[i].startTime = -1;
+        InstructList[i].completeTime = -1;
+        InstructList[i].wbTime = -1;
+    }
     for (int i=0;i<LENREGISTER;i++)
     {
         registerconvert["R"+QString::number(i)] = i;
@@ -650,17 +656,42 @@ int Status::updateName()
     }
     for (int i=0;i<registerlen;i++){
         IntRegister[i].Name = QString::number(IntRegister[i].truename);
+        if (IntRegister[i].Q == -1)
+            IntRegister[i].QName = "";
+        else
+            IntRegister[i].QName = Nameconvert[IntRegister[i].Q];
     }
     for (int i=0;i<registerlen;i++){
         FloatRegister[i].Name = QString::number(FloatRegister[i].truename);
+        if (FloatRegister[i].Q == -1)
+            FloatRegister[i].QName = "";
+        else
+            FloatRegister[i].QName = Nameconvert[FloatRegister[i].Q];
     }
     for (int i=0;i<addreservation;i++){
         AddReservation[i].Name = Nameconvert[AddReservation[i].truename];
         AddReservation[i].Op = Opconvert[AddReservation[i].trueop];
+        if (AddReservation[i].QJ == -1)
+            AddReservation[i].QJName = "";
+        else
+            AddReservation[i].QJName = Loadstoreconvert[AddReservation[i].QJ];
+        if (AddReservation[i].QK == -1)
+            AddReservation[i].QKName = "";
+        else
+            AddReservation[i].QKName = Loadstoreconvert[AddReservation[i].QK];
     }
     for (int i=0;i<multireservation;i++){
         MultiplyReservation[i].Name = Nameconvert[MultiplyReservation[i].truename];
         MultiplyReservation[i].Op = Opconvert[MultiplyReservation[i].trueop];
+        if (MultiplyReservation[i].QJ == -1)
+            MultiplyReservation[i].QJName = "";
+        else
+            MultiplyReservation[i].QJName = Loadstoreconvert[MultiplyReservation[i].QJ];
+        if (MultiplyReservation[i].QK == -1)
+            MultiplyReservation[i].QKName = "";
+        else
+            MultiplyReservation[i].QKName = Loadstoreconvert[MultiplyReservation[i].QK];
+
     }
     qDebug()<<"updateNameend";
 }

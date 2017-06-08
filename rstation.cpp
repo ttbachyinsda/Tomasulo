@@ -13,5 +13,7 @@ RStation::RStation()
     VK = 0.0;
     QJ = -1;
     QK = -1;
+    this->QJName = "";
+    this->QKName = "";
     A = 0;
 }
