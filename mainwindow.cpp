@@ -566,7 +566,7 @@ void MainWindow::doload1()
     i[3].F1 = "F4";
     i[3].F2 = "50";
     i[3].F3 = "";
-    i[4].Op = "ADD";
+    i[4].Op = "ADDD";
     i[4].F1 = "F3";
     i[4].F2 = "F1";
     i[4].F3 = "F4";
