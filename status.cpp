@@ -57,6 +57,7 @@ Status::Status()
     CDBresultData = 0;
     CDBresultEnable = false;
     CDBresultReservation = -1;
+    flag  = false;
 
     for (int i=0;i<LENBUFFER;i++){
         RStation bn;
@@ -112,7 +113,6 @@ void Status::LOCKER(bool lockstatus)
 //需要实现nextstep，即status的下一步功能
 int Status::nextstep(){
     CDBresultEnableNext = false;
-    flag  = false;
     int errorcode = ERRRIGHT;
     errorcode = updateOut();
     if (errorcode != 0) ERROR_RETURN();
@@ -471,6 +471,8 @@ int Status::updateBuffer() {
         n.truename = name;
         n.Time = -1;
         bufferNext.append(n);
+        if (BufferPointer)
+            BufferPointer = bufferNext[0];
     }
     flag = false;
     if (BufferPointer == NULL){
