@@ -540,11 +540,7 @@ int Status::updateBuffer() {
 int Status::updateFinal() {
     int errorcode = ERRRIGHT;
     NowCycle++;
-    if (instructPointer >= InstructList.size()){
-        if (AddReservationPointer==NULL && MultiplyReservationPointer == NULL &&BufferPointer ==NULL) {
-            return ERRALREADYEND;
-        }
-    }
+
     for (int i=0;i<LENADDRESERVATION;i++) {
         AddReservation[i].IsBusy = addReservationNext[i].IsBusy;
         AddReservation[i].trueop = addReservationNext[i].trueop;
@@ -591,7 +587,11 @@ int Status::updateFinal() {
     CDBresultData = CDBresultDataNext;
     CDBresultEnable = CDBresultEnableNext;
     CDBresultReservation = CDBresultReservationNext;
-
+    if (instructPointer >= InstructList.size()){
+        if (!CDBresultEnable && AddReservationPointer==NULL && MultiplyReservationPointer == NULL &&BufferPointer ==NULL) {
+            return ERRALREADYEND;
+        }
+    }
     return errorcode;
 }
 
