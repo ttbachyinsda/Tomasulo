@@ -151,6 +151,7 @@ void Status::LOCKER(bool lockstatus)
 //IMPORTANT
 //需要实现nextstep，即status的下一步功能
 int Status::nextstep(){
+    NowCycle++;
     CDBresultEnableNext = false;
     int errorcode = ERRRIGHT;
     errorcode = updateOut();
@@ -569,7 +570,6 @@ int Status::updateBuffer() {
 
 int Status::updateFinal() {
     int errorcode = ERRRIGHT;
-    NowCycle++;
 
     for (int i=0;i<LENADDRESERVATION;i++) {
         AddReservation[i].IsBusy = addReservationNext[i].IsBusy;
@@ -653,6 +653,10 @@ int Status::updateName()
     for (int i=0;i<bufferlen;i++){
         Buffer[i].Name = Loadstoreconvert[Buffer[i].truename];
         Buffer[i].Op = Opconvert[Buffer[i].trueop];
+        if (Buffer[i].QK == -1)
+            Buffer[i].QKName = "";
+        else
+            Buffer[i].QKName = Nameconvert[Buffer[i].QK];
     }
     for (int i=0;i<registerlen;i++){
         IntRegister[i].Name = QString::number(IntRegister[i].truename);

@@ -79,22 +79,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->reservestation->setMinimumHeight((ui->reservestation->rowCount()+1)*ui->reservestation->rowHeight(0));
     ui->FU->setColumnCount(registerlen);
     ui->FU->setRowCount(2);
+    ui->FU->setMinimumHeight((ui->FU->rowCount()+1)*ui->FU->rowHeight(0));
     QStringList fheader;
     for (int i=0;i<ui->FU->columnCount();i++){
         fheader<<"F"+QString::number(i);
     }
     ui->FU->setHorizontalHeaderLabels(fheader);
-    ui->RU->setColumnCount(registerlen);
-    ui->RU->setRowCount(1);
-    QStringList rheader;
-    for (int i=0;i<ui->RU->columnCount();i++){
-        rheader<<"R"+QString::number(i);
-    }
-    ui->RU->setHorizontalHeaderLabels(rheader);
-    ui->loadstorequeue->setColumnCount(4);
+    ui->loadstorequeue->setColumnCount(6);
     ui->loadstorequeue->setRowCount(bufferlen);
     QStringList loadheader;
-    loadheader<<"名称"<<"运行状态"<<"地址"<<"运行时间";
+    loadheader<<"名称"<<"运行状态"<<"地址"<<"运行时间"<<"VK"<<"QK";
     ui->loadstorequeue->setHorizontalHeaderLabels(loadheader);
     for (int i=0;i<ui->instructionqueue->columnCount();i++){
         ui->instructionqueue->setColumnWidth(i,60);
@@ -104,9 +98,6 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     for (int i=0;i<ui->FU->columnCount();i++){
         ui->FU->setColumnWidth(i,60);
-    }
-    for (int i=0;i<ui->RU->columnCount();i++){
-        ui->RU->setColumnWidth(i,60);
     }
     for (int i=0;i<ui->loadstorequeue->columnCount();i++){
         ui->loadstorequeue->setColumnWidth(i,60);
@@ -454,11 +445,6 @@ void MainWindow::consideritem()
         ui->FU->setItem(1,i,new QTableWidgetItem(nowstatus->FloatRegister[i].QName));
         ui->FU->item(1,i)->setTextAlignment(Qt::AlignCenter);
     }
-    //整数寄存器的显示
-    for (int i=0;i<registerlen;i++){
-        ui->RU->setItem(0,i,new QTableWidgetItem(QString::number(nowstatus->IntRegister[i].V)));
-        ui->RU->item(0,i)->setTextAlignment(Qt::AlignCenter);
-    }
     //load queue的显示
     for (int i=0;i<bufferlen;i++){
         ui->loadstorequeue->setItem(i,0,new QTableWidgetItem(nowstatus->Buffer[i].Name));
@@ -479,6 +465,13 @@ void MainWindow::consideritem()
         else
             ui->loadstorequeue->setItem(i,3,new QTableWidgetItem(QString::number(nowstatus->Buffer[i].Time)));
         ui->loadstorequeue->item(i,3)->setTextAlignment(Qt::AlignCenter);
+        if (nowstatus->Buffer[i].VK == -1)
+            ui->loadstorequeue->setItem(i,4,new QTableWidgetItem(""));
+        else
+            ui->loadstorequeue->setItem(i,4,new QTableWidgetItem(QString::number(nowstatus->Buffer[i].VK)));
+        ui->loadstorequeue->item(i,4)->setTextAlignment(Qt::AlignCenter);
+        ui->loadstorequeue->setItem(i,5,new QTableWidgetItem(nowstatus->Buffer[i].QKName));
+        ui->loadstorequeue->item(i,5)->setTextAlignment(Qt::AlignCenter);
     }
 }
 //这是一个回调函数，不需要修改
