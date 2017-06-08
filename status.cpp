@@ -462,7 +462,8 @@ int Status::updateBuffer() {
             BufferPointer = &bufferNext[0];
             BufferPointer->Time = CYCLELOAD;
         }
-    } else {
+    }
+    if (BufferPointer){
         bool flag = false;
         if (BufferPointer->Time > 0) --BufferPointer->Time;
         if (BufferPointer->Time == 0){
