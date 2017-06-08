@@ -149,11 +149,13 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 void MainWindow::donextstep()
 {
     //核心功能，必须实现
+    step++;
     cout<<"do next step"<<endl;
     SET_RUNSTATUS(1);
     int errorcode = nowstatus->nextstep();
     if (errorcode == ERRALREADYEND) SET_RUNSTATUS(2);
     doupdate();
+
     //如果运行结束，需要SET_RUNSTATUS(2);
     //if (runstatus == RUN_END) SET_RUNSTATUS(2);
 }

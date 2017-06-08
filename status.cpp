@@ -133,6 +133,17 @@ FRegister* Status::getFRegister(int name){
     return f;
 }
 
+FRegister* Status::getFRegisterNext(int name){
+    FRegister *f = NULL;
+    for (int i=0;i<LENREGISTER;i++){
+        if (floatRegisterNext[i].truename == name){
+            f = &floatRegisterNext[i];
+            break;
+        }
+    }
+    return f;
+}
+
 Register* Status::getRegister(int name)
 {
     Register *f = NULL;
@@ -167,7 +178,7 @@ int Status::updateOut(){
                     addReservationNext[i].QJ = F2->Q;
                 FRegister *F3 = getFRegister(inst->truef3);
                 if (F3->Q == -1){
-                    addReservationNext[i].QK = 0;
+                    addReservationNext[i].QK = -1;
                     addReservationNext[i].VK = F3->V;
                 } else
                     addReservationNext[i].QK = F3->Q;
@@ -399,7 +410,7 @@ int Status::updateMultiplyReservation() {
                     qDebug()<<"ERROR ATTHIS";
                 }
                 MultiplyReservationPointer = NULL;
-                for (int i=0;i<LENADDRESERVATION;i++){
+                for (int i=0;i<LENMULTIPLYRESERVATION;i++){
                     if (MultiplyReservation[i].IsBusy && MultiplyReservation[i].truename != CDBresultReservationNext) {
                         if (MultiplyReservation[i].QK == -1 && MultiplyReservation[i].QJ == -1){
                             MultiplyReservationPointer = &multiplyReservationNext[i];
@@ -561,7 +572,7 @@ int Status::updateRegister()
         }
     }
     if (FRenable) {
-        FRegister *f = getFRegister(FRname);
+        FRegister *f = getFRegisterNext(FRname);
         f->Q = FRres;
     }
     return errorcode;

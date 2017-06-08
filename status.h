@@ -79,6 +79,7 @@ public:
     int updateRegister();
     int updateName();
     FRegister* getFRegister(int name);
+    FRegister* getFRegisterNext(int name);
     Register* getRegister(int name);
     QMap<int,QString> Opconvert;
 };
