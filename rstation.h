@@ -1,7 +1,8 @@
 #ifndef RSTATION_H
 #define RSTATION_H
 #include <QString>
-
+#include "instruction.h"
+class Instruction;
 class RStation
 {
 public:
@@ -17,6 +18,7 @@ public:
     int QJ;
     int QK;
     int A;
+    Instruction* inst;
 };
 
 #endif // RSTATION_H

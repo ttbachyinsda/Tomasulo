@@ -8,7 +8,7 @@ class Instruction
 public:
     Instruction();
     QString Op, F1, F2, F3;
-    int trueop,truef1,truef2,truef3,truer;
+    int trueop,truef1,truef2,truef3,truer,startTime,completeTime,wbTime;
 };
 
 #endif // INSTRUCTION_H

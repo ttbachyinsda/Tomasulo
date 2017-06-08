@@ -199,6 +199,7 @@ int Status::updateOut(){
         for (int i=0;i<LENADDRESERVATION; i++){
             if (!AddReservation[i].IsBusy){
                 addReservationNext[i].IsBusy = true;
+                addReservationNext[i].inst = inst;
                 addReservationNext[i].trueop = inst->trueop;
                 addReservationNext[i].Time = -1;
                 FRegister *F2 = getFRegister(inst->truef2);
@@ -229,6 +230,7 @@ int Status::updateOut(){
         for (int i=0;i<LENMULTIPLYRESERVATION;i++){
             if (!MultiplyReservation[i].IsBusy){
                 multiplyReservationNext[i].IsBusy = true;
+                multiplyReservationNext[i].inst = inst;
                 multiplyReservationNext[i].trueop = inst->trueop;
                 multiplyReservationNext[i].Time = -1;
                 FRegister *F2 = getFRegister(inst->truef2);
@@ -260,6 +262,7 @@ int Status::updateOut(){
         for (int i=0;i<LENBUFFER;i++){
             if (!Buffer[i].IsBusy){
                 bufferNext[i]->IsBusy = true;
+                bufferNext[i]->inst = inst;
                 bufferNext[i]->trueop = inst->trueop;
                 bufferNext[i]->Time = -1;
 //                Register *F2 = getRegister(inst->truef2);
@@ -286,6 +289,7 @@ int Status::updateOut(){
         for (int i=0;i<LENBUFFER;i++){
             if (!bufferNext[i]->IsBusy){
                 bufferNext[i]->IsBusy = true;
+                bufferNext[i]->inst = inst;
                 bufferNext[i]->trueop = inst->trueop;
                 bufferNext[i]->Time = -1;
 //                Register* F2 = getRegister(inst->truef2);
@@ -321,6 +325,7 @@ int Status::updateAddReservation() {
     if (CDBresultEnable) {
         for (int i=0;i<LENADDRESERVATION;i++){
             if (AddReservation[i].truename == CDBresultReservation){
+                addReservationNext[i].inst ->wbTime = NowCycle;
                 addReservationNext[i].IsBusy = false;
             }
             if (addReservationNext[i].QJ == CDBresultReservation){
@@ -339,6 +344,7 @@ int Status::updateAddReservation() {
                 if (addReservationNext[i].QK == -1 && addReservationNext[i].QJ == -1){
                     AddReservationPointer = &addReservationNext[i];
                     addReservationNext[i].Time = CYCLEADD;
+                    addReservationNext[i].inst ->startTime = NowCycle;
                     break;
                 }
             }
@@ -370,6 +376,7 @@ int Status::updateAddReservation() {
                         if (AddReservation[i].QK == -1 && AddReservation[i].QJ == -1) {
                             AddReservationPointer = &addReservationNext[i];
                             addReservationNext[i].Time = CYCLEADD;
+                            addReservationNext[i].inst ->startTime = NowCycle;
                             break;
                         }
                     }
