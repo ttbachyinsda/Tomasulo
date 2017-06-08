@@ -550,3 +550,64 @@ void MainWindow::doload2()
     }
     doupdate();
 }
+
+void MainWindow::doload1()
+{
+    nowstatus->InstructList.clear();
+    Instruction i[10];
+    i[0].Op = "ADDD";
+    i[0].F1 = "F1";
+    i[0].F2 = "F1";
+    i[0].F3 = "F1";
+    i[1].Op = "ST";
+    i[1].F1 = "F!";
+    i[1].F2 = "10";
+    i[1].F3 = "";
+    i[2].Op = "SUBD";
+    i[2].F1 = "F1";
+    i[2].F2 = "F1";
+    i[2].F3 = "F2";
+    i[3].Op = "LD";
+    i[3].F1 = "F2";
+    i[3].F2 = "50";
+    i[3].F3 = "";
+    i[4].Op = "MULD";
+    i[4].F1 = "F3";
+    i[4].F2 = "F1";
+    i[4].F3 = "F2";
+    i[5].Op = "MULD";
+    i[5].F1 = "F3";
+    i[5].F2 = "F1";
+    i[5].F3 = "F2";
+    i[6].Op = "ST";
+    i[6].F1 = "F3";
+    i[6].F2 = "50";
+    i[6].F3 = "";
+    i[7].Op = "LD";
+    i[7].F1 = "F3";
+    i[7].F2 = "50";
+    i[7].F3 = "";
+    i[8].Op = "DIVD";
+    i[8].F1 = "F3";
+    i[8].F2 = "F2";
+    i[8].F3 = "F3";
+    i[9].Op = "ST";
+    i[9].F1 = "F3";
+    i[9].F2 = "50";
+    i[9].F3 = "";
+    for (int j=0;j<10;j++){
+        Instruction instruction = i[j];
+        if (instruction.Op == "LD" || instruction.Op == "ST"){
+            instruction.trueop = nowstatus->registerconvert[instruction.Op];
+            instruction.truef1 = nowstatus->registerconvert[instruction.F1];
+            instruction.truef2 = instruction.F2.toInt();
+        } else {
+            instruction.trueop = nowstatus->registerconvert[instruction.Op];
+            instruction.truef1 = nowstatus->registerconvert[instruction.F1];
+            instruction.truef2 = nowstatus->registerconvert[instruction.F2];
+            instruction.truef3 = nowstatus->registerconvert[instruction.F3];
+        }
+        nowstatus->InstructList.append(instruction);
+    }
+    doupdate();
+}
