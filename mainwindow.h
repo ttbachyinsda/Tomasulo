@@ -10,8 +10,8 @@
 #include "modifymemory.h"
 using namespace std;
 
-#define DO_LOCK() {LOCK=true; if (nowstatus) nowstatus->Lock=true; considerlock();}
-#define DO_UNLOCK() {LOCK=false; if (nowstatus) nowstatus->Lock=false; considerlock();}
+#define DO_LOCK() {LOCK=true; if (nowstatus) nowstatus->LOCKER(true); considerlock();}
+#define DO_UNLOCK() {LOCK=false; if (nowstatus) nowstatus->LOCKER(false); considerlock();}
 #define SET_RUNSTATUS(x) {runstatus=(x); considerrunstatus();}
 namespace Ui {
 class MainWindow;

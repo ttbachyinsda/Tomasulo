@@ -66,10 +66,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //表格的表头和行号和列号在下面修改
     ui->horizontalLayoutWidget->resize(this->width(),this->height()-ui->mainToolBar->height()-ui->statusBar->height()-ui->menuBar->height());
-    ui->instructionqueue->setColumnCount(8);
+    ui->instructionqueue->setColumnCount(7);
     ui->instructionqueue->setRowCount(max(10,nowstatus->InstructList.length()));
     QStringList insheader;
-    insheader<<"指令名称"<<"操作数1"<<"操作数2"<<"操作数3"<<"开始时间"<<"剩余时间"<<"完成时间"<<"写回时间";
+    insheader<<"指令名称"<<"操作数1"<<"操作数2"<<"操作数3"<<"开始时间"<<"完成时间"<<"写回时间";
     ui->instructionqueue->setHorizontalHeaderLabels(insheader);
     ui->reservestation->setColumnCount(9);
     ui->reservestation->setRowCount(addreservation+multireservation);
@@ -192,8 +192,11 @@ void MainWindow::dohalt()
 {
     //此时会解锁，可以使用清除所有内容或者不作任何处理两种策略，但无论如何需要将status中的其余内容置零。可以与restart作同一实现
     cout<<"do halt"<<endl;
+    nowstatus->restart();
+    step = 0;
     DO_UNLOCK();
     SET_RUNSTATUS(0);
+    doupdate();
 }
 void MainWindow::doabout()
 {
@@ -362,10 +365,10 @@ void MainWindow::considerstatusbar()
 void MainWindow::consideritem()
 {
     emit updatememoryshower();
-    ui->instructionqueue->setColumnCount(8);
+    ui->instructionqueue->setColumnCount(7);
     ui->instructionqueue->setRowCount(max(10,nowstatus->InstructList.length()));
     QStringList insheader;
-    insheader<<"指令名称"<<"操作数1"<<"操作数2"<<"操作数3"<<"开始时间"<<"剩余时间"<<"完成时间"<<"写回时间";
+    insheader<<"指令名称"<<"操作数1"<<"操作数2"<<"操作数3"<<"开始时间"<<"完成时间"<<"写回时间";
     ui->instructionqueue->setHorizontalHeaderLabels(insheader);
     for (int i=0;i<ui->instructionqueue->rowCount();i++){
         ui->instructionqueue->setItem(i,0,new QTableWidgetItem(""));

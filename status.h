@@ -50,6 +50,7 @@ public:
     QList<Register> IntRegister;
     QList<FRegister> FloatRegister;
     QList<float> Memory;
+    QList<float> preMemory;
     float CDBresultData;
     int CDBresultReservation;
     bool CDBresultEnable;
