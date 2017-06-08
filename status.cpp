@@ -230,10 +230,10 @@ int Status::updateOut(){
                 FRegister *F3 = getFRegister(inst->truef3);
                 if (F3->Q == -1){
                     multiplyReservationNext[i].QK = -1;
-                    multiplyReservationNext[i].VK = F2->V;
+                    multiplyReservationNext[i].VK = F3->V;
                 }
                 else
-                    multiplyReservationNext[i].QK = F2->Q;
+                    multiplyReservationNext[i].QK = F3->Q;
                 multiplyReservationNext[i].Time = -1;
                 FRenable = true;
                 FRres = multiplyReservationNext[i].truename;
@@ -432,23 +432,22 @@ int Status::updateMultiplyReservation() {
                 }
                 MultiplyReservationPointer = NULL;
                 for (int i=0;i<LENMULTIPLYRESERVATION;i++){
-                    if (MultiplyReservation[i].IsBusy && MultiplyReservation[i].truename != CDBresultReservationNext) {
-                        if (MultiplyReservation[i].QK == -1 && MultiplyReservation[i].QJ == -1){
+                    if (multiplyReservationNext[i].IsBusy && multiplyReservationNext[i].truename != CDBresultReservationNext) {
+                        if (multiplyReservationNext[i].QK == -1 && multiplyReservationNext[i].QJ == -1){
                             MultiplyReservationPointer = &multiplyReservationNext[i];
                             switch (MultiplyReservationPointer->trueop){
                             case OPMULTIPLY:
                             {
-                                CDBresultDataNext = MultiplyReservationPointer->VJ * MultiplyReservationPointer->VK;
+                                multiplyReservationNext[i].Time = CYCLEMULTIPLY;
                                 break;
                             }
                             case OPDIVIDE:
                             {
-                                if (MultiplyReservationPointer->VK == 0) return ERRDIVZERO;
-                                CDBresultDataNext = MultiplyReservationPointer->VJ / MultiplyReservationPointer->VK;
+                                multiplyReservationNext[i].Time = CYCLEDIVIDE;
                                 break;
                             }
                             default:
-                                qDebug()<<"ERRORATTHIS";
+                                qDebug()<<"ERROR AT THISTHAT";
                             }
                             break;
                         }
