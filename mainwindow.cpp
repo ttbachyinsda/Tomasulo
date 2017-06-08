@@ -125,6 +125,7 @@ MainWindow::MainWindow(QWidget *parent) :
     consideritem();
     //end initialize
 
+    timer = NULL;
     //初始化显示内存的窗口
     showmemory = NULL;
     connect(ui->showmemory,SIGNAL(pressed()),this,SLOT(doshowmemory()));
@@ -147,9 +148,16 @@ void MainWindow::donextstep()
     //核心功能，必须实现
     step++;
     cout<<"do next step"<<endl;
-    SET_RUNSTATUS(1);
+    if (runstatus != 3) SET_RUNSTATUS(1) else considerrunstatus();
     int errorcode = nowstatus->nextstep();
-    if (errorcode == ERRALREADYEND) SET_RUNSTATUS(2);
+    if (errorcode == ERRALREADYEND)
+    {
+        if (timer != NULL){
+            timer->stop();
+            disconnect(timer,SIGNAL(timeout()),this,SLOT(donextstep()));
+        }
+        SET_RUNSTATUS(2);
+    }
     doupdate();
 
     //如果运行结束，需要SET_RUNSTATUS(2);
@@ -167,16 +175,30 @@ void MainWindow::docontinue()
     //需要实现一个计时器，就差这个功能的时候可以来找我实现
     cout<<"do continue"<<endl;
     SET_RUNSTATUS(3);
+    if (timer == NULL){
+        timer = new QTimer();
+        connect(timer,SIGNAL(timeout()),this,SLOT(donextstep()));
+        timer->start(1000);
+    } else {
+        disconnect(timer,SIGNAL(timeout()),this,SLOT(donextstep()));
+        connect(timer,SIGNAL(timeout()),this,SLOT(donextstep()));
+        timer->start(1000);
+    }
 }
 void MainWindow::dopause()
 {
     //需要实现一个计时器，就差这个功能的时候可以来找我实现
     cout<<"do pause"<<endl;
+    timer->stop();
     SET_RUNSTATUS(1);
 }
 void MainWindow::dorestart()
 {
     //需要实现从头开始的函数，如：
+    if (timer != NULL){
+        timer->stop();
+        disconnect(timer,SIGNAL(timeout()),this,SLOT(donextstep()));
+    }
     nowstatus->restart();
     step = 0;
     cout<<"do restart"<<endl;
@@ -187,6 +209,10 @@ void MainWindow::dohalt()
 {
     //此时会解锁，可以使用清除所有内容或者不作任何处理两种策略，但无论如何需要将status中的其余内容置零。可以与restart作同一实现
     cout<<"do halt"<<endl;
+    if (timer != NULL){
+        timer->stop();
+        disconnect(timer,SIGNAL(timeout()),this,SLOT(donextstep()));
+    }
     nowstatus->restart();
     step = 0;
     DO_UNLOCK();
