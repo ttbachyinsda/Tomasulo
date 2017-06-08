@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>nextstep.ico</file>
+        <file>stop.ico</file>
+        <file>run.ico</file>
+        <file>document.ico</file>
+        <file>halt.ico</file>
+        <file>memory.ico</file>
+        <file>lock.ico</file>
+        <file>icon.ico</file>
+        <file>pause.ico</file>
+        <file>restart.ico</file>
+    </qresource>
+</RCC>
