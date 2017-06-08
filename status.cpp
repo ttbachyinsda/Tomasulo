@@ -12,6 +12,14 @@ void Status::init()
         registerconvert["R"+QString::number(i)] = i;
         registerconvert["F"+QString::number(i)] = i+LENREGISTER;
     }
+    for (int i=0;i<LENADDRESERVATION;i++)
+    {
+        Nameconvert[i] = "ADD"+QString::number(i+1);
+    }
+    for (int i=0;i<LENMULTIPLYRESERVATION;i++)
+    {
+        Nameconvert[i+LENADDRESERVATION] = "MULT"+QString::number(i+1);
+    }
     registerconvert["ADDD"] = OPADD;
     registerconvert["MULD"] = OPMULTIPLY;
     registerconvert["SUBD"] = OPMINUS;
@@ -646,11 +654,11 @@ int Status::updateName()
         FloatRegister[i].Name = QString::number(FloatRegister[i].truename);
     }
     for (int i=0;i<addreservation;i++){
-        AddReservation[i].Name = QString::number(AddReservation[i].truename);
+        AddReservation[i].Name = Nameconvert[AddReservation[i].truename];
         AddReservation[i].Op = Opconvert[AddReservation[i].trueop];
     }
     for (int i=0;i<multireservation;i++){
-        MultiplyReservation[i].Name = QString::number(MultiplyReservation[i].truename);
+        MultiplyReservation[i].Name = Nameconvert[MultiplyReservation[i].truename];
         MultiplyReservation[i].Op = Opconvert[MultiplyReservation[i].trueop];
     }
     qDebug()<<"updateNameend";

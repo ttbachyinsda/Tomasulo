@@ -375,6 +375,9 @@ void MainWindow::consideritem()
         ui->instructionqueue->setItem(i,1,new QTableWidgetItem(""));
         ui->instructionqueue->setItem(i,2,new QTableWidgetItem(""));
         ui->instructionqueue->setItem(i,3,new QTableWidgetItem(""));
+        ui->instructionqueue->setItem(i,4,new QTableWidgetItem(""));
+        ui->instructionqueue->setItem(i,5,new QTableWidgetItem(""));
+        ui->instructionqueue->setItem(i,6,new QTableWidgetItem(""));
     }
     //指令队列的显示在下面一个循环
     for (int i=0;i<nowstatus->InstructList.size();i++){
@@ -382,7 +385,10 @@ void MainWindow::consideritem()
         ui->instructionqueue->setItem(i,1,new QTableWidgetItem(nowstatus->InstructList[i].F1));
         ui->instructionqueue->setItem(i,2,new QTableWidgetItem(nowstatus->InstructList[i].F2));
         ui->instructionqueue->setItem(i,3,new QTableWidgetItem(nowstatus->InstructList[i].F3));
-        for (int k=0;k<=3;k++){
+        ui->instructionqueue->setItem(i,4,new QTableWidgetItem(QString::number(nowstatus->InstructList[i].startTime)));
+        ui->instructionqueue->setItem(i,5,new QTableWidgetItem(QString::number(nowstatus->InstructList[i].completeTime)));
+        ui->instructionqueue->setItem(i,6,new QTableWidgetItem(QString::number(nowstatus->InstructList[i].wbTime)));
+        for (int k=0;k<=6;k++){
             ui->instructionqueue->item(i,k)->setTextAlignment(Qt::AlignCenter);
         }
     }
