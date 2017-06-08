@@ -11,11 +11,7 @@ Status::Status()
     for (int i=0;i<bufferlen;i++){
         RStation loadstore;
         loadstore.truename = i + LENADDRESERVATION + LENMULTIPLYRESERVATION;
-        if (i<LENBUFFER/2){
-            Loadstoreconvert[i+LENADDRESERVATION+LENMULTIPLYRESERVATION] = "Load"+QString::number(i+1);
-        } else {
-            Loadstoreconvert[i+LENADDRESERVATION+LENMULTIPLYRESERVATION] = "Store"+QString::number(i-LENBUFFER/2+1);
-        }
+        Loadstoreconvert[i+LENADDRESERVATION+LENMULTIPLYRESERVATION] = "Buffer"+QString::number(i+1);
         Buffer.append(loadstore);
     }
     for (int i=0;i<registerlen;i++){
@@ -60,8 +56,8 @@ Status::Status()
     flag  = false;
 
     for (int i=0;i<LENBUFFER;i++){
-        RStation bn;
-        bn.truename = i+LENADDRESERVATION + LENMULTIPLYRESERVATION;
+        RStation *bn = new RStation();
+        bn->truename = i+LENADDRESERVATION + LENMULTIPLYRESERVATION;
         bufferNext.append(bn);
     }
     for (int i=0;i<LENADDRESERVATION;i++){
@@ -234,9 +230,9 @@ int Status::updateOut(){
     {
         for (int i=0;i<LENBUFFER;i++){
             if (!Buffer[i].IsBusy){
-                bufferNext[i].IsBusy = true;
-                bufferNext[i].trueop = inst->trueop;
-                bufferNext[i].Time = -1;
+                bufferNext[i]->IsBusy = true;
+                bufferNext[i]->trueop = inst->trueop;
+                bufferNext[i]->Time = -1;
 //                Register *F2 = getRegister(inst->truef2);
 //                if (F2->Q == -1) {
 //                    bufferNext[i].QJ = -1;
@@ -244,11 +240,11 @@ int Status::updateOut(){
 //                }
 //                else
 //                    bufferNext[i].QJ = F2->Q;
-                bufferNext[i].A = inst->truef2;
-                bufferNext[i].QK = -1;
-                bufferNext[i].QJ = -1;
+                bufferNext[i]->A = inst->truef2;
+                bufferNext[i]->QK = -1;
+                bufferNext[i]->QJ = -1;
                 FRenable = true;
-                FRres = bufferNext[i].truename;
+                FRres = bufferNext[i]->truename;
                 FRname = inst->truef1;
                 instructPointer++;
                 break;
@@ -259,10 +255,10 @@ int Status::updateOut(){
     case OPSTORE:
     {
         for (int i=0;i<LENBUFFER;i++){
-            if (!bufferNext[i].IsBusy){
-                bufferNext[i].IsBusy = true;
-                bufferNext[i].trueop = inst->trueop;
-                bufferNext[i].Time = -1;
+            if (!bufferNext[i]->IsBusy){
+                bufferNext[i]->IsBusy = true;
+                bufferNext[i]->trueop = inst->trueop;
+                bufferNext[i]->Time = -1;
 //                Register* F2 = getRegister(inst->truef2);
 //                if (F2->Q == -1){
 //                    bufferNext[i].QJ = -1;
@@ -270,16 +266,16 @@ int Status::updateOut(){
 //                }
 //                else
 //                    bufferNext[i].QJ = F2->Q;
-                bufferNext[i].A = inst->truef2;
-                bufferNext[i].Time = -1;
-                bufferNext[i].QJ = -1;
+                bufferNext[i]->A = inst->truef2;
+                bufferNext[i]->Time = -1;
+                bufferNext[i]->QJ = -1;
                 FRegister *F1 = getFRegister(inst->truef1);
                 if (F1->Q == -1){
-                    bufferNext[i].QK = -1;
-                    bufferNext[i].VK = F1->V;
+                    bufferNext[i]->QK = -1;
+                    bufferNext[i]->VK = F1->V;
                 }
                 else
-                    bufferNext[i].QK = F1->Q;
+                    bufferNext[i]->QK = F1->Q;
                 instructPointer++;
                 break;
             }
@@ -465,19 +461,20 @@ int Status::updateBuffer() {
     }
     if (flag)
     {
-        int name = bufferNext[0].truename;
+        int name = bufferNext[0]->truename;
+        delete bufferNext[0];
         bufferNext.erase(bufferNext.begin());
-        RStation n;
-        n.truename = name;
-        n.Time = -1;
+        RStation *n = new RStation();
+        n->truename = name;
+        n->Time = -1;
         bufferNext.append(n);
         if (BufferPointer)
-            BufferPointer = &bufferNext[0];
+            BufferPointer = bufferNext[0];
     }
     flag = false;
     if (BufferPointer == NULL){
-        if (bufferNext[0].IsBusy && bufferNext[0].QK == -1){
-            BufferPointer = &bufferNext[0];
+        if (bufferNext[0]->IsBusy && bufferNext[0]->QK == -1){
+            BufferPointer = bufferNext[0];
             BufferPointer->Time = CYCLELOAD;
         }
     }
@@ -503,8 +500,8 @@ int Status::updateBuffer() {
         }
         if (flag) {
             BufferPointer = NULL;
-            if (bufferNext[1].IsBusy && bufferNext[1].QK == -1){
-                BufferPointer = &bufferNext[1];
+            if (bufferNext[1]->IsBusy && bufferNext[1]->QK == -1){
+                BufferPointer = bufferNext[1];
                 BufferPointer->Time = CYCLELOAD;
             }
         }
@@ -541,16 +538,16 @@ int Status::updateFinal() {
         MultiplyReservation[i].VK = multiplyReservationNext[i].VK;
     }
     for (int i=0;i<LENBUFFER;i++){
-        Buffer[i].truename = bufferNext[i].truename;
-        Buffer[i].IsBusy = bufferNext[i].IsBusy;
-        Buffer[i].trueop = bufferNext[i].trueop;
-        Buffer[i].Time = bufferNext[i].Time;
-        Buffer[i].QJ = bufferNext[i].QJ;
-        Buffer[i].QK = bufferNext[i].QK;
-        Buffer[i].VJ = bufferNext[i].VJ;
-        Buffer[i].VK = bufferNext[i].VK;
-        Buffer[i].A = bufferNext[i].A;
-        Buffer[i].VJforBuffer = bufferNext[i].VJforBuffer;
+        Buffer[i].truename = bufferNext[i]->truename;
+        Buffer[i].IsBusy = bufferNext[i]->IsBusy;
+        Buffer[i].trueop = bufferNext[i]->trueop;
+        Buffer[i].Time = bufferNext[i]->Time;
+        Buffer[i].QJ = bufferNext[i]->QJ;
+        Buffer[i].QK = bufferNext[i]->QK;
+        Buffer[i].VJ = bufferNext[i]->VJ;
+        Buffer[i].VK = bufferNext[i]->VK;
+        Buffer[i].A = bufferNext[i]->A;
+        Buffer[i].VJforBuffer = bufferNext[i]->VJforBuffer;
     }
     for (int i=0;i<LENREGISTER;i++){
         IntRegister[i].truename = registerNext[i].truename;

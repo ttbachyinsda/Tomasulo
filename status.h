@@ -52,7 +52,8 @@ public:
     float CDBresultData;
     int CDBresultReservation;
     bool CDBresultEnable;
-    QList<RStation> bufferNext, addReservationNext, multiplyReservationNext;
+    QList<RStation> addReservationNext, multiplyReservationNext;
+    QList<RStation*> bufferNext;
     QList<Register> registerNext;
     QList<FRegister> floatRegisterNext;
     QList<float> memoryNext;

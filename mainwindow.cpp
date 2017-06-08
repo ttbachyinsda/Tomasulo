@@ -90,10 +90,10 @@ MainWindow::MainWindow(QWidget *parent) :
         rheader<<"R"+QString::number(i);
     }
     ui->RU->setHorizontalHeaderLabels(rheader);
-    ui->loadstorequeue->setColumnCount(3);
+    ui->loadstorequeue->setColumnCount(4);
     ui->loadstorequeue->setRowCount(bufferlen);
     QStringList loadheader;
-    loadheader<<"名称"<<"运行状态"<<"地址";
+    loadheader<<"名称"<<"运行状态"<<"地址"<<"运行时间";
     ui->loadstorequeue->setHorizontalHeaderLabels(loadheader);
     for (int i=0;i<ui->instructionqueue->columnCount();i++){
         ui->instructionqueue->setColumnWidth(i,60);
@@ -468,6 +468,8 @@ void MainWindow::consideritem()
         }
         ui->loadstorequeue->setItem(i,2,new QTableWidgetItem(QString::number(nowstatus->Buffer[i].A)));
         ui->loadstorequeue->item(i,2)->setTextAlignment(Qt::AlignCenter);
+        ui->loadstorequeue->setItem(i,3,new QTableWidgetItem(QString::number(nowstatus->Buffer[i].Time)));
+        ui->loadstorequeue->item(i,3)->setTextAlignment(Qt::AlignCenter);
     }
 }
 //这是一个回调函数，不需要修改

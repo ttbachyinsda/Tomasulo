@@ -26,7 +26,8 @@ void ModifyMemory::update()
         if (fabs(tempvec[i]-0.0)>1e-9)
             ui->listWidget->addItem("base+"+QString::number(i)+" : "+QString("%1").arg(tempvec[i]));
     }
-    ui->position->setText("");
+    ui->position->clear();
+    ui->value->clear();
 }
 
 void ModifyMemory::cancel()

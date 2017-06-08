@@ -31,7 +31,7 @@ void InstructDialog::update()
         else
             ui->listWidget->addItem(nowstatus->InstructList[i].Op+" "+nowstatus->InstructList[i].F1+" "+nowstatus->InstructList[i].F2+" "+nowstatus->InstructList[i].F3);
     }
-    ui->lineEdit->setText("");
+    ui->lineEdit->clear();
 }
 
 InstructDialog::~InstructDialog()
