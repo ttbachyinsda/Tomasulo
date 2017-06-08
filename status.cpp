@@ -541,7 +541,7 @@ int Status::updateFinal() {
     int errorcode = ERRRIGHT;
     NowCycle++;
     if (instructPointer >= InstructList.size()){
-        if (false) {
+        if (AddReservationPointer==NULL && MultiplyReservationPointer == NULL &&BufferPointer ==NULL) {
             return ERRALREADYEND;
         }
     }
