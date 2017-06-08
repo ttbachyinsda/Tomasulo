@@ -7,6 +7,17 @@ Status::Status()
 
 void Status::init()
 {
+    for (int i=0;i<LENREGISTER;i++)
+    {
+        registerconvert["R"+QString::number(i)] = i;
+        registerconvert["F"+QString::number(i)] = i+LENREGISTER;
+    }
+    registerconvert["ADDD"] = OPADD;
+    registerconvert["MULD"] = OPMULTIPLY;
+    registerconvert["SUBD"] = OPMINUS;
+    registerconvert["DIVD"] = OPDIVIDE;
+    registerconvert["LD"] = OPLOAD;
+    registerconvert["ST"] = OPSTORE;
     Opconvert[OPADD] = "ADDD";
     Opconvert[OPMINUS] = "SUBD";
     Opconvert[OPMULTIPLY] = "MULD";

@@ -86,6 +86,7 @@ public:
     Register* getRegister(int name);
     QMap<int,QString> Opconvert;
     QMap<int,QString> Loadstoreconvert;
+    QMap<QString,int> registerconvert;
 };
 
 #endif // STATUS_H
