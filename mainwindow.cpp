@@ -563,13 +563,13 @@ void MainWindow::doload1()
     i[2].F2 = "F1";
     i[2].F3 = "F2";
     i[3].Op = "LD";
-    i[3].F1 = "F2";
+    i[3].F1 = "F4";
     i[3].F2 = "50";
     i[3].F3 = "";
-    i[4].Op = "MULD";
+    i[4].Op = "ADD";
     i[4].F1 = "F3";
     i[4].F2 = "F1";
-    i[4].F3 = "F2";
+    i[4].F3 = "F4";
     i[5].Op = "MULD";
     i[5].F1 = "F3";
     i[5].F2 = "F1";

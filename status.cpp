@@ -365,10 +365,12 @@ int Status::updateAddReservation() {
             }
         }
     } else {
+        if (AddReservationPointer->Time == 1)
+            AddReservationPointer->inst->completeTime = NowCycle;
         if (AddReservationPointer->Time > 0)
             --AddReservationPointer->Time;
         if (AddReservationPointer->Time == 0){
-            AddReservationPointer->inst->completeTime = NowCycle;
+
             if (CDBresultEnableNext == false) {
                 CDBresultEnableNext = true;
                 CDBresultReservationNext = AddReservationPointer->truename;
@@ -446,9 +448,12 @@ int Status::updateMultiplyReservation() {
             }
         }
     } else {
-        if (MultiplyReservationPointer->Time > 0) -- MultiplyReservationPointer->Time;
-        if (MultiplyReservationPointer->Time == 0) {
+        if (MultiplyReservationPointer->Time == 1)
             MultiplyReservationPointer->inst->completeTime = NowCycle;
+        if (MultiplyReservationPointer->Time > 0) -- MultiplyReservationPointer->Time;
+
+        if (MultiplyReservationPointer->Time == 0) {
+
             if (CDBresultEnableNext == false){
                 CDBresultEnableNext = true;
                 CDBresultReservationNext = MultiplyReservationPointer->truename;
@@ -536,11 +541,13 @@ int Status::updateBuffer() {
         }
     }
     else{
-
+        if (BufferPointer->Time == 1)
+            BufferPointer ->inst->completeTime = NowCycle;
         if (BufferPointer->Time > 0) --BufferPointer->Time;
+
         if (BufferPointer->Time == 0){
 //            BufferPointer->A += BufferPointer->VJforBuffer;
-            BufferPointer ->inst->completeTime = NowCycle;
+
             if (BufferPointer->trueop == OPSTORE) {
                 storeEnable = true;
                 storeData = BufferPointer->VK;
