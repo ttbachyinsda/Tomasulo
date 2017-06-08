@@ -84,7 +84,10 @@ MainWindow::MainWindow(QWidget *parent) :
     for (int i=0;i<ui->FU->columnCount();i++){
         fheader<<"F"+QString::number(i);
     }
+    QStringList fverheader;
+    fverheader<<"Value"<<"Pointer";
     ui->FU->setHorizontalHeaderLabels(fheader);
+    ui->FU->setVerticalHeaderLabels(fverheader);
     ui->loadstorequeue->setColumnCount(6);
     ui->loadstorequeue->setRowCount(bufferlen);
     QStringList loadheader;
