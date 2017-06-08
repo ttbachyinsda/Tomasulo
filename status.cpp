@@ -495,13 +495,7 @@ int Status::updateBuffer() {
             }
         }
         if (flag) {
-            int name = BufferPointer->truename;
             BufferPointer = NULL;
-            bufferNext.erase(bufferNext.begin());
-            RStation n;
-            n.truename = name;
-            n.Time = -1;
-            bufferNext.append(n);
             if (bufferNext[1].IsBusy && bufferNext[1].QK == -1){
                 BufferPointer = &bufferNext[1];
                 BufferPointer->Time = CYCLELOAD;
