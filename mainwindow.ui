@@ -104,7 +104,7 @@
           <set>QAbstractItemView::NoEditTriggers</set>
          </property>
          <attribute name="verticalHeaderVisible">
-          <bool>false</bool>
+          <bool>true</bool>
          </attribute>
         </widget>
        </item>
