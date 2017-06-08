@@ -472,7 +472,7 @@ int Status::updateBuffer() {
         n.Time = -1;
         bufferNext.append(n);
         if (BufferPointer)
-            BufferPointer = bufferNext[0];
+            BufferPointer = &bufferNext[0];
     }
     flag = false;
     if (BufferPointer == NULL){
