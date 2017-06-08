@@ -8,6 +8,7 @@
 #include "status.h"
 #include "showmemory.h"
 #include "modifymemory.h"
+#include <QTimer>
 using namespace std;
 
 #define DO_LOCK() {LOCK=true; if (nowstatus) nowstatus->LOCKER(true); considerlock();}
@@ -65,6 +66,7 @@ private:
     bool LOCK;
     int runstatus;
     int step;
+    QTimer* timer;
 };
 
 #endif // MAINWINDOW_H
