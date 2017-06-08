@@ -17,6 +17,7 @@ public:
     int VJforBuffer;
     int QJ;
     int QK;
+    QString QJName,QKName;
     int A;
     Instruction* inst;
 };

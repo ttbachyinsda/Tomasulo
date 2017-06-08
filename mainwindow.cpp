@@ -71,30 +71,27 @@ MainWindow::MainWindow(QWidget *parent) :
     QStringList insheader;
     insheader<<"指令名称"<<"操作数1"<<"操作数2"<<"操作数3"<<"开始时间"<<"完成时间"<<"写回时间";
     ui->instructionqueue->setHorizontalHeaderLabels(insheader);
-    ui->reservestation->setColumnCount(9);
+    ui->reservestation->setColumnCount(8);
     ui->reservestation->setRowCount(addreservation+multireservation);
     QStringList resheader;
-    resheader<<"剩余时间"<<"名称"<<"运行状态"<<"运算符"<<"VJ"<<"VK"<<"QJ"<<"QK"<<"A";
+    resheader<<"剩余时间"<<"名称"<<"运行状态"<<"运算符"<<"VJ"<<"VK"<<"QJ"<<"QK";
     ui->reservestation->setHorizontalHeaderLabels(resheader);
     ui->reservestation->setMinimumHeight((ui->reservestation->rowCount()+1)*ui->reservestation->rowHeight(0));
     ui->FU->setColumnCount(registerlen);
-    ui->FU->setRowCount(1);
+    ui->FU->setRowCount(2);
+    ui->FU->setMinimumHeight((ui->FU->rowCount()+1)*ui->FU->rowHeight(0));
     QStringList fheader;
     for (int i=0;i<ui->FU->columnCount();i++){
         fheader<<"F"+QString::number(i);
     }
+    QStringList fverheader;
+    fverheader<<"Value"<<"Pointer";
     ui->FU->setHorizontalHeaderLabels(fheader);
-    ui->RU->setColumnCount(registerlen);
-    ui->RU->setRowCount(1);
-    QStringList rheader;
-    for (int i=0;i<ui->RU->columnCount();i++){
-        rheader<<"R"+QString::number(i);
-    }
-    ui->RU->setHorizontalHeaderLabels(rheader);
-    ui->loadstorequeue->setColumnCount(4);
+    ui->FU->setVerticalHeaderLabels(fverheader);
+    ui->loadstorequeue->setColumnCount(6);
     ui->loadstorequeue->setRowCount(bufferlen);
     QStringList loadheader;
-    loadheader<<"名称"<<"运行状态"<<"地址"<<"运行时间";
+    loadheader<<"名称"<<"运行状态"<<"地址"<<"运行时间"<<"VK"<<"QK";
     ui->loadstorequeue->setHorizontalHeaderLabels(loadheader);
     for (int i=0;i<ui->instructionqueue->columnCount();i++){
         ui->instructionqueue->setColumnWidth(i,60);
@@ -104,9 +101,6 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     for (int i=0;i<ui->FU->columnCount();i++){
         ui->FU->setColumnWidth(i,60);
-    }
-    for (int i=0;i<ui->RU->columnCount();i++){
-        ui->RU->setColumnWidth(i,60);
     }
     for (int i=0;i<ui->loadstorequeue->columnCount();i++){
         ui->loadstorequeue->setColumnWidth(i,60);
@@ -385,16 +379,28 @@ void MainWindow::consideritem()
         ui->instructionqueue->setItem(i,1,new QTableWidgetItem(nowstatus->InstructList[i].F1));
         ui->instructionqueue->setItem(i,2,new QTableWidgetItem(nowstatus->InstructList[i].F2));
         ui->instructionqueue->setItem(i,3,new QTableWidgetItem(nowstatus->InstructList[i].F3));
-        ui->instructionqueue->setItem(i,4,new QTableWidgetItem(QString::number(nowstatus->InstructList[i].startTime)));
-        ui->instructionqueue->setItem(i,5,new QTableWidgetItem(QString::number(nowstatus->InstructList[i].completeTime)));
-        ui->instructionqueue->setItem(i,6,new QTableWidgetItem(QString::number(nowstatus->InstructList[i].wbTime)));
+        if (nowstatus->InstructList[i].startTime == -1)
+            ui->instructionqueue->setItem(i,4,new QTableWidgetItem(""));
+        else
+            ui->instructionqueue->setItem(i,4,new QTableWidgetItem(QString::number(nowstatus->InstructList[i].startTime)));
+        if (nowstatus->InstructList[i].completeTime == -1)
+            ui->instructionqueue->setItem(i,5,new QTableWidgetItem(""));
+        else
+            ui->instructionqueue->setItem(i,5,new QTableWidgetItem(QString::number(nowstatus->InstructList[i].completeTime)));
+        if (nowstatus->InstructList[i].wbTime == -1)
+            ui->instructionqueue->setItem(i,6,new QTableWidgetItem(""));
+        else
+            ui->instructionqueue->setItem(i,6,new QTableWidgetItem(QString::number(nowstatus->InstructList[i].wbTime)));
         for (int k=0;k<=6;k++){
             ui->instructionqueue->item(i,k)->setTextAlignment(Qt::AlignCenter);
         }
     }
     //保留栈的显示在下面两个循环
     for (int i=0;i<addreservation;i++){
-        ui->reservestation->setItem(i,0,new QTableWidgetItem(QString::number(nowstatus->AddReservation[i].Time)));
+        if (nowstatus->AddReservation[i].Time == -1)
+            ui->reservestation->setItem(i,0,new QTableWidgetItem(""));
+        else
+            ui->reservestation->setItem(i,0,new QTableWidgetItem(QString::number(nowstatus->AddReservation[i].Time)));
         ui->reservestation->setItem(i,1,new QTableWidgetItem(nowstatus->AddReservation[i].Name));
         if (nowstatus->AddReservation[i].IsBusy){
             ui->reservestation->setItem(i,2,new QTableWidgetItem("Busy"));
@@ -406,26 +412,18 @@ void MainWindow::consideritem()
         ui->reservestation->setItem(i,3,new QTableWidgetItem(nowstatus->AddReservation[i].Op));
         ui->reservestation->setItem(i,4,new QTableWidgetItem(QString("%1").arg(nowstatus->AddReservation[i].VJ)));
         ui->reservestation->setItem(i,5,new QTableWidgetItem(QString("%1").arg(nowstatus->AddReservation[i].VK)));
-        ui->reservestation->setItem(i,6,new QTableWidgetItem(QString::number(nowstatus->AddReservation[i].QJ)));
-        ui->reservestation->setItem(i,7,new QTableWidgetItem(QString::number(nowstatus->AddReservation[i].QK)));
-//        if (nowstatus->AddReservation[i].QJ){
-//            ui->reservestation->setItem(i,6,new QTableWidgetItem(nowstatus->AddReservation[i].QJ->Name));
-//        } else {
-//            ui->reservestation->setItem(i,6,new QTableWidgetItem(""));
-//        }
-//        if (nowstatus->AddReservation[i].QK){
-//            ui->reservestation->setItem(i,7,new QTableWidgetItem(nowstatus->AddReservation[i].QK->Name));
-//        } else {
-//            ui->reservestation->setItem(i,7,new QTableWidgetItem(""));
-//        }
-        ui->reservestation->setItem(i,8,new QTableWidgetItem(QString::number(nowstatus->AddReservation[i].A)));
-        for (int k=0;k<=8;k++){
+        ui->reservestation->setItem(i,6,new QTableWidgetItem(nowstatus->AddReservation[i].QJName));
+        ui->reservestation->setItem(i,7,new QTableWidgetItem(nowstatus->AddReservation[i].QKName));
+        for (int k=0;k<=7;k++){
             ui->reservestation->item(i,k)->setTextAlignment(Qt::AlignCenter);
         }
     }
     for (int i=0;i<multireservation;i++){
         int j = i + addreservation;
-        ui->reservestation->setItem(j,0,new QTableWidgetItem(QString::number(nowstatus->MultiplyReservation[i].Time)));
+        if (nowstatus->MultiplyReservation[i].Time == -1)
+            ui->reservestation->setItem(j,0,new QTableWidgetItem(""));
+        else
+            ui->reservestation->setItem(j,0,new QTableWidgetItem(QString::number(nowstatus->MultiplyReservation[i].Time)));
         ui->reservestation->setItem(j,1,new QTableWidgetItem(nowstatus->MultiplyReservation[i].Name));
         if (nowstatus->MultiplyReservation[i].IsBusy){
             ui->reservestation->setItem(j,2,new QTableWidgetItem("Busy"));
@@ -437,20 +435,9 @@ void MainWindow::consideritem()
         ui->reservestation->setItem(j,3,new QTableWidgetItem(nowstatus->MultiplyReservation[i].Op));
         ui->reservestation->setItem(j,4,new QTableWidgetItem(QString("%1").arg(nowstatus->MultiplyReservation[i].VJ)));
         ui->reservestation->setItem(j,5,new QTableWidgetItem(QString("%1").arg(nowstatus->MultiplyReservation[i].VK)));
-        ui->reservestation->setItem(j,6,new QTableWidgetItem(QString::number(nowstatus->MultiplyReservation[i].QJ)));
-        ui->reservestation->setItem(j,7,new QTableWidgetItem(QString::number(nowstatus->MultiplyReservation[i].QK)));
-//        if (nowstatus->MultiplyReservation[i].QJ){
-//            ui->reservestation->setItem(j,6,new QTableWidgetItem(nowstatus->MultiplyReservation[i].QJ->Name));
-//        } else {
-//            ui->reservestation->setItem(j,6,new QTableWidgetItem(""));
-//        }
-//        if (nowstatus->MultiplyReservation[i].QK){
-//            ui->reservestation->setItem(j,7,new QTableWidgetItem(nowstatus->MultiplyReservation[i].QK->Name));
-//        } else {
-//            ui->reservestation->setItem(j,7,new QTableWidgetItem(""));
-//        }
-        ui->reservestation->setItem(j,8,new QTableWidgetItem(QString::number(nowstatus->MultiplyReservation[i].A)));
-        for (int k=0;k<=8;k++){
+        ui->reservestation->setItem(j,6,new QTableWidgetItem(nowstatus->MultiplyReservation[i].QJName));
+        ui->reservestation->setItem(j,7,new QTableWidgetItem(nowstatus->MultiplyReservation[i].QKName));
+        for (int k=0;k<=7;k++){
             ui->reservestation->item(j,k)->setTextAlignment(Qt::AlignCenter);
         }
     }
@@ -458,11 +445,8 @@ void MainWindow::consideritem()
     for (int i=0;i<registerlen;i++){
         ui->FU->setItem(0,i,new QTableWidgetItem(QString("%1").arg(nowstatus->FloatRegister[i].V)));
         ui->FU->item(0,i)->setTextAlignment(Qt::AlignCenter);
-    }
-    //整数寄存器的显示
-    for (int i=0;i<registerlen;i++){
-        ui->RU->setItem(0,i,new QTableWidgetItem(QString::number(nowstatus->IntRegister[i].V)));
-        ui->RU->item(0,i)->setTextAlignment(Qt::AlignCenter);
+        ui->FU->setItem(1,i,new QTableWidgetItem(nowstatus->FloatRegister[i].QName));
+        ui->FU->item(1,i)->setTextAlignment(Qt::AlignCenter);
     }
     //load queue的显示
     for (int i=0;i<bufferlen;i++){
@@ -479,8 +463,18 @@ void MainWindow::consideritem()
         }
         ui->loadstorequeue->setItem(i,2,new QTableWidgetItem(QString::number(nowstatus->Buffer[i].A)));
         ui->loadstorequeue->item(i,2)->setTextAlignment(Qt::AlignCenter);
-        ui->loadstorequeue->setItem(i,3,new QTableWidgetItem(QString::number(nowstatus->Buffer[i].Time)));
+        if (nowstatus->Buffer[i].Time == -1)
+            ui->loadstorequeue->setItem(i,3,new QTableWidgetItem(""));
+        else
+            ui->loadstorequeue->setItem(i,3,new QTableWidgetItem(QString::number(nowstatus->Buffer[i].Time)));
         ui->loadstorequeue->item(i,3)->setTextAlignment(Qt::AlignCenter);
+        if (nowstatus->Buffer[i].VK == -1)
+            ui->loadstorequeue->setItem(i,4,new QTableWidgetItem(""));
+        else
+            ui->loadstorequeue->setItem(i,4,new QTableWidgetItem(QString::number(nowstatus->Buffer[i].VK)));
+        ui->loadstorequeue->item(i,4)->setTextAlignment(Qt::AlignCenter);
+        ui->loadstorequeue->setItem(i,5,new QTableWidgetItem(nowstatus->Buffer[i].QKName));
+        ui->loadstorequeue->item(i,5)->setTextAlignment(Qt::AlignCenter);
     }
 }
 //这是一个回调函数，不需要修改

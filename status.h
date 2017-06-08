@@ -17,8 +17,8 @@
 #define memorylen 4096
 #define LENMEMORY 4096
 #define LENBUFFER 6
-#define registerlen 16
-#define LENREGISTER 16
+#define registerlen 11
+#define LENREGISTER 11
 #define ERRRIGHT 0
 #define ERRDIVZERO -1
 #define ERRALREADYSTART -2

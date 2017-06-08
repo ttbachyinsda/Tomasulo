@@ -7,6 +7,12 @@ Status::Status()
 
 void Status::init()
 {
+    for (int i=0;i<InstructList.size();i++)
+    {
+        InstructList[i].startTime = -1;
+        InstructList[i].completeTime = -1;
+        InstructList[i].wbTime = -1;
+    }
     for (int i=0;i<LENREGISTER;i++)
     {
         registerconvert["R"+QString::number(i)] = i;
@@ -145,6 +151,7 @@ void Status::LOCKER(bool lockstatus)
 //IMPORTANT
 //需要实现nextstep，即status的下一步功能
 int Status::nextstep(){
+    NowCycle++;
     CDBresultEnableNext = false;
     int errorcode = ERRRIGHT;
     errorcode = updateOut();
@@ -563,7 +570,6 @@ int Status::updateBuffer() {
 
 int Status::updateFinal() {
     int errorcode = ERRRIGHT;
-    NowCycle++;
 
     for (int i=0;i<LENADDRESERVATION;i++) {
         AddReservation[i].IsBusy = addReservationNext[i].IsBusy;
@@ -647,20 +653,49 @@ int Status::updateName()
     for (int i=0;i<bufferlen;i++){
         Buffer[i].Name = Loadstoreconvert[Buffer[i].truename];
         Buffer[i].Op = Opconvert[Buffer[i].trueop];
+        if (Buffer[i].QK == -1)
+            Buffer[i].QKName = "";
+        else
+            Buffer[i].QKName = Nameconvert[Buffer[i].QK];
     }
     for (int i=0;i<registerlen;i++){
         IntRegister[i].Name = QString::number(IntRegister[i].truename);
+        if (IntRegister[i].Q == -1)
+            IntRegister[i].QName = "";
+        else
+            IntRegister[i].QName = Nameconvert[IntRegister[i].Q];
     }
     for (int i=0;i<registerlen;i++){
         FloatRegister[i].Name = QString::number(FloatRegister[i].truename);
+        if (FloatRegister[i].Q == -1)
+            FloatRegister[i].QName = "";
+        else
+            FloatRegister[i].QName = Nameconvert[FloatRegister[i].Q];
     }
     for (int i=0;i<addreservation;i++){
         AddReservation[i].Name = Nameconvert[AddReservation[i].truename];
         AddReservation[i].Op = Opconvert[AddReservation[i].trueop];
+        if (AddReservation[i].QJ == -1)
+            AddReservation[i].QJName = "";
+        else
+            AddReservation[i].QJName = Loadstoreconvert[AddReservation[i].QJ];
+        if (AddReservation[i].QK == -1)
+            AddReservation[i].QKName = "";
+        else
+            AddReservation[i].QKName = Loadstoreconvert[AddReservation[i].QK];
     }
     for (int i=0;i<multireservation;i++){
         MultiplyReservation[i].Name = Nameconvert[MultiplyReservation[i].truename];
         MultiplyReservation[i].Op = Opconvert[MultiplyReservation[i].trueop];
+        if (MultiplyReservation[i].QJ == -1)
+            MultiplyReservation[i].QJName = "";
+        else
+            MultiplyReservation[i].QJName = Loadstoreconvert[MultiplyReservation[i].QJ];
+        if (MultiplyReservation[i].QK == -1)
+            MultiplyReservation[i].QKName = "";
+        else
+            MultiplyReservation[i].QKName = Loadstoreconvert[MultiplyReservation[i].QK];
+
     }
     qDebug()<<"updateNameend";
 }
