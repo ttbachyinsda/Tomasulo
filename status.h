@@ -65,6 +65,7 @@ public:
     int storeLoc;
     float storeData;
     bool storeEnable;
+    bool flag;
 
     int CurrentInstruction, NowCycle;
     bool Isdone, Lock;
