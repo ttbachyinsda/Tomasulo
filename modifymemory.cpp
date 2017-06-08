@@ -61,8 +61,12 @@ void ModifyMemory::modifyitem()
 void ModifyMemory::updateitem()
 {
     nowstatus->Memory.clear();
+    nowstatus->memoryNext.clear();
     for (int i=0;i<memorylen;i++)
+    {
         nowstatus->Memory.append(tempvec[i]);
+        nowstatus->memoryNext.append(tempvec[i]);
+    }
     emit updatemain();
 }
 void ModifyMemory::keyPressEvent(QKeyEvent *e)

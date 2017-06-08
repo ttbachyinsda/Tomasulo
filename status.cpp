@@ -16,7 +16,7 @@ Status::Status()
     for (int i=0;i<registerlen;i++){
         Register reg;
         reg.Name="R"+QString::number(i);
-        reg.truename = i + LENREGISTER;
+        reg.truename = i;
         reg.V = i+1;
         IntRegister.append(reg);
     }
@@ -70,7 +70,7 @@ Status::Status()
     }
     for (int i=0;i<LENREGISTER;i++){
         Register rn;
-        rn.truename = i + LENREGISTER;
+        rn.truename = i;
         rn.V = i+1;
         registerNext.append(rn);
     }
@@ -81,7 +81,7 @@ Status::Status()
         floatRegisterNext.append(frn);
     }
     for (int i=0;i<LENMEMORY;i++){
-        float mn;
+        float mn = 0;
         memoryNext.append(mn);
     }
     CDBresultDataNext = 0;
