@@ -26,8 +26,6 @@ void ModifyMemory::update()
         if (fabs(tempvec[i]-0.0)>1e-9)
             ui->listWidget->addItem("base+"+QString::number(i)+" : "+QString("%1").arg(tempvec[i]));
     }
-    ui->position->clear();
-    ui->value->clear();
 }
 
 void ModifyMemory::cancel()
@@ -43,8 +41,8 @@ void ModifyMemory::modifyitem()
 {
     QString position = ui->position->text();
     QString value = ui->value->text();
-    nowstatus->Memory.clear();
-    nowstatus->memoryNext.clear();
+    ui->position->clear();
+    ui->value->clear();
     bool ok1,ok2;
     int num1 = position.toInt(&ok1);
     float num2 = value.toFloat(&ok2);
@@ -64,6 +62,8 @@ void ModifyMemory::modifyitem()
 
 void ModifyMemory::updateitem()
 {
+    nowstatus->Memory.clear();
+    nowstatus->memoryNext.clear();
     for (int i=0;i<memorylen;i++)
     {
         nowstatus->Memory.append(tempvec[i]);
