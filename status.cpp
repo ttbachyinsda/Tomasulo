@@ -112,6 +112,7 @@ void Status::LOCKER(bool lockstatus)
 //需要实现nextstep，即status的下一步功能
 int Status::nextstep(){
     CDBresultEnableNext = false;
+    flag  = false;
     int errorcode = ERRRIGHT;
     errorcode = updateOut();
     if (errorcode != 0) ERROR_RETURN();
@@ -462,6 +463,16 @@ int Status::updateBuffer() {
             }
         }
     }
+    if (flag)
+    {
+        int name = bufferNext[0].truename;
+        bufferNext.erase(bufferNext.begin());
+        RStation n;
+        n.truename = name;
+        n.Time = -1;
+        bufferNext.append(n);
+    }
+    flag = false;
     if (BufferPointer == NULL){
         if (bufferNext[0].IsBusy && bufferNext[0].QK == -1){
             BufferPointer = &bufferNext[0];
@@ -469,7 +480,7 @@ int Status::updateBuffer() {
         }
     }
     else{
-        bool flag = false;
+
         if (BufferPointer->Time > 0) --BufferPointer->Time;
         if (BufferPointer->Time == 0){
 //            BufferPointer->A += BufferPointer->VJforBuffer;
@@ -496,8 +507,8 @@ int Status::updateBuffer() {
             n.truename = name;
             n.Time = -1;
             bufferNext.append(n);
-            if (Buffer[1].IsBusy && Buffer[1].QK == -1){
-                BufferPointer = &bufferNext[0];
+            if (bufferNext[1].IsBusy && bufferNext[1].QK == -1){
+                BufferPointer = &bufferNext[1];
                 BufferPointer->Time = CYCLELOAD;
             }
         }
