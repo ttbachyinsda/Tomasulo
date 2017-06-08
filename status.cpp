@@ -128,10 +128,18 @@ void Status::init()
 void Status::restart()
 {
     init();
+    Memory.clear();
+    for (int i=0;i<LENMEMORY;i++)
+        Memory.append(preMemory[i]);
 }
 void Status::LOCKER(bool lockstatus)
 {
     Lock = lockstatus;
+    if (lockstatus == true){
+        preMemory.clear();
+        for (int i=0;i<LENMEMORY;i++)
+            preMemory.append(Memory[i]);
+    }
 }
 
 //IMPORTANT
