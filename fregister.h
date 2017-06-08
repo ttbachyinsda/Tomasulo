@@ -11,6 +11,7 @@ public:
     int truename;
     int Q;
     float V;
+    QString QName;
 };
 
 #endif // FREGISTER_H

@@ -6,4 +6,5 @@ FRegister::FRegister()
     this->truename = -1;
     Q = -1;
     V = 0.0;
+    this->QName = "";
 }
