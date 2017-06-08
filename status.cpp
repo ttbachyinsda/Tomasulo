@@ -453,9 +453,9 @@ int Status::updateBuffer() {
             if (Buffer[i].QJ == CDBresultReservation){
                 qDebug()<<"该系统中这里只应存放准备好的整数寄存器的内容";
             }
-            if (bufferNext[i].QK == CDBresultReservation){
-                bufferNext[i].QK = -1;
-                bufferNext[i].VK = CDBresultData;
+            if (bufferNext[i]->QK == CDBresultReservation){
+                bufferNext[i]->QK = -1;
+                bufferNext[i]->VK = CDBresultData;
             }
         }
     }

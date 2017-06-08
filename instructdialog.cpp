@@ -31,7 +31,6 @@ void InstructDialog::update()
         else
             ui->listWidget->addItem(nowstatus->InstructList[i].Op+" "+nowstatus->InstructList[i].F1+" "+nowstatus->InstructList[i].F2+" "+nowstatus->InstructList[i].F3);
     }
-    ui->lineEdit->clear();
 }
 
 InstructDialog::~InstructDialog()
@@ -58,6 +57,7 @@ void InstructDialog::deleteitem()
 void InstructDialog::additem()
 {
     QString instruction = ui->lineEdit->text();
+    ui->lineEdit->clear();
     auto res = validate(instruction);
     if (res.second){
         ui->listWidget->addItem(res.first);
