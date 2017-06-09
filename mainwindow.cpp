@@ -610,7 +610,7 @@ void MainWindow::doload1()
     i[7].F1 = "F3";
     i[7].F2 = "50";
     i[7].F3 = "";
-    i[8].Op = "DIVD";
+    i[8].Op = "MULD";
     i[8].F1 = "F3";
     i[8].F2 = "F2";
     i[8].F3 = "F3";
