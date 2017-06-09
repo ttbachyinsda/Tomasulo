@@ -625,7 +625,7 @@ int Status::updateFinal() {
     CDBresultEnable = CDBresultEnableNext;
     CDBresultReservation = CDBresultReservationNext;
     if (instructPointer >= InstructList.size()){
-        if (!CDBresultEnable && AddReservationPointer==NULL && MultiplyReservationPointer == NULL &&BufferPointer ==NULL) {
+        if (!storeEnable&& !CDBresultEnable && AddReservationPointer==NULL && MultiplyReservationPointer == NULL &&BufferPointer ==NULL) {
             return ERRALREADYEND;
         }
     }
