@@ -50,7 +50,7 @@ void Status::init()
         Register reg;
         reg.Name="R"+QString::number(i);
         reg.truename = i;
-        reg.V = i+1;
+        reg.V = 0;
         IntRegister.append(reg);
     }
     FloatRegister.clear();
@@ -58,7 +58,7 @@ void Status::init()
         FRegister reg;
         reg.Name="F"+QString::number(i);
         reg.truename = i + LENREGISTER;
-        reg.V = i+1;
+        reg.V = 0;
         FloatRegister.append(reg);
     }
     AddReservation.clear();
@@ -114,14 +114,14 @@ void Status::init()
     for (int i=0;i<LENREGISTER;i++){
         Register rn;
         rn.truename = i;
-        rn.V = i+1;
+        rn.V = 0;
         registerNext.append(rn);
     }
     floatRegisterNext.clear();
     for (int i=0;i<LENREGISTER;i++){
         FRegister frn;
         frn.truename = i + LENREGISTER;
-        frn.V = i+1;
+        frn.V = 0;
         floatRegisterNext.append(frn);
     }
     memoryNext.clear();

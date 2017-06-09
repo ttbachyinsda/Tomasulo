@@ -157,6 +157,8 @@ void MainWindow::donextstep()
             disconnect(timer,SIGNAL(timeout()),this,SLOT(donextstep()));
         }
         SET_RUNSTATUS(2);
+        doupdate();
+        QMessageBox::information(this, tr("提示"), "运行已结束");
     }
     doupdate();
 
@@ -229,7 +231,7 @@ void MainWindow::dohelp()
 {
     //不需要修改，这是帮助界面的显示
     cout<<"do help"<<endl;
-    QMessageBox::information(this, tr("帮助"), "再写帮助就没时间刷恍惚套了");
+    QMessageBox::information(this, tr("帮助"), "请助教一定打一星好评");
 }
 
 void MainWindow::domodifyinstruct()
